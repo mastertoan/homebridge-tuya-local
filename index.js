@@ -85,25 +85,38 @@ class TuyaLan {
     discoverDevices() {
         const devices = {};
         const connectedDevices = [];
-        const fakeDevices = [];
         this.config.devices.forEach(device => {
             try {
                 device.id = ('' + device.id).trim();
                 device.key = ('' + device.key).trim();
                 device.type = ('' + device.type).trim();
-
                 device.ip = ('' + (device.ip || '')).trim();
             } catch(ex) {}
 
             if (!device.type) return this.log.error('%s (%s) doesn\'t have a type defined.', device.name || 'Unnamed device', device.id);
             if (!CLASS_DEF[device.type.toLowerCase()]) return this.log.error('%s (%s) doesn\'t have a valid type defined.', device.name || 'Unnamed device', device.id);
 
-            if (device.fake) fakeDevices.push({name: device.id.slice(8), ...device});
-            else devices[device.id] = {name: device.id.slice(8), ...device};
+            if (device.ip && device.connect === 'direct') {
+                this.log.info('Direct connecting to %s (%s) via %s', device.name, device.id, device.ip);
+                
+                this.addAccessory(new TuyaAccessory({
+                    ...device,
+                    log: this.log,
+                    UUID: UUID.generate(PLUGIN_NAME + ':' + device.id),
+                    connect: true
+                }));
+                return;
+            }
+
+            devices[device.id] = {
+                name: device.id.slice(8),
+                ...device,
+                log: this.log
+            };
         });
 
         const deviceIds = Object.keys(devices);
-        if (deviceIds.length === 0) return this.log.error('No valid configured devices found.');
+        if (deviceIds.length === 0) return;
 
         this.log.info('Starting discovery...');
 
@@ -116,42 +129,18 @@ class TuyaLan {
 
                 this.log.info('Discovered %s (%s) identified as %s (%s)', devices[config.id].name, config.id, devices[config.id].type, config.version);
 
-                const device = new TuyaAccessory({
-                    ...devices[config.id], ...config,
-                    log: this.log,
-                    UUID: UUID.generate(PLUGIN_NAME + ':' + config.id),
-                    connect: false
-                });
-                this.addAccessory(device);
+                this.addAccessory(new TuyaAccessory({...config}));
             });
-
-        fakeDevices.forEach(config => {
-            this.log.info('Adding fake device: %s', config.name);
-            this.addAccessory(new TuyaAccessory({
-                ...config,
-                log: this.log,
-                UUID: UUID.generate(PLUGIN_NAME + ':fake:' + config.id),
-                connect: false
-            }));
-        });
 
         setTimeout(() => {
             deviceIds.forEach(deviceId => {
-                if (connectedDevices.includes(deviceId)) return;
-
-                if (devices[deviceId].ip) {
-
-                    this.log.info('Failed to discover %s (%s) in time but will connect via %s.', devices[deviceId].name, deviceId, devices[deviceId].ip);
-
-                    const device = new TuyaAccessory({
-                        ...devices[deviceId],
-                        log: this.log,
-                        UUID: UUID.generate(PLUGIN_NAME + ':' + deviceId),
-                        connect: false
-                    });
-                    this.addAccessory(device);
-                } else {
-                    this.log.warn('Failed to discover %s (%s) in time but will keep looking.', devices[deviceId].name, deviceId);
+                if (!connectedDevices.includes(deviceId)) {
+                    if (devices[deviceId].ip) {
+                        this.log.info('Failed to discover %s (%s) in time but will connect via %s.', devices[deviceId].name, deviceId, devices[deviceId].ip);
+                        this.addAccessory(new TuyaAccessory({...devices[deviceId]}));
+                    } else {
+                        this.log.warn('Failed to discover %s (%s) in time but will keep looking.', devices[deviceId].name, deviceId);
+                    }
                 }
             });
         }, 60000);
@@ -162,7 +151,6 @@ class TuyaLan {
     }
 
     configureAccessory(accessory) {
-        // also checks null objects or empty config - this._expectedUUIDs
         if (accessory instanceof PlatformAccessory && this._expectedUUIDs && this._expectedUUIDs.includes(accessory.UUID)) {
             this.cachedAccessories.set(accessory.UUID, accessory);
             accessory.services.forEach(service => {
@@ -181,11 +169,6 @@ class TuyaLan {
                 });
             });
         } else {
-            /*
-             * Irrespective of this unregistering, Homebridge continues
-             * to "_prepareAssociatedHAPAccessory" and "addBridgedAccessory".
-             * This timeout will hopefully remove the accessory after that has happened.
-             */
             setTimeout(() => {
                 this.removeAccessory(accessory);
             }, 1000);
@@ -193,6 +176,9 @@ class TuyaLan {
     }
 
     addAccessory(device) {
+        if (!device.log) {
+            device.log = this.log;
+        }
         const deviceConfig = device.context;
         const type = (deviceConfig.type || '').toLowerCase();
 
