@@ -124,6 +124,12 @@
                   {
                     "title": "Tank A Level",
                     "enum": ["TankALevel"]
+                  },
+                  {
+                    "title": "Multi Outlet Switch",
+                    "enum": [
+                      "MultiOutlet"
+                    ]
                   }
                 ]
               },
@@ -575,6 +581,57 @@
                 "placeholder": "7",
                 "condition": {
                   "functionBody": "return model.devices && model.devices[arrayIndices] && ['TankALevel'].includes(model.devices[arrayIndices].type);"
+                }
+              },
+              "dp_switch_1": {
+                "type": "string",
+                "title": "DP Switch 1",
+                "description": "Data point ID of switch 1 (2)",
+                "placeholder": "2",
+                "required": false,
+                "condition": {
+                  "functionBody": "return model.devices && model.devices[arrayIndices] && ['MultiOutlet'].includes(model.devices[arrayIndices].type);"
+                }
+              },
+              "dp_switch_2": {
+                "type": "string", 
+                "title": "DP Switch 2",
+                "description": "Data point ID of switch 2 (3)",
+                "placeholder": "3",
+                "required": false,
+                "condition": {
+                  "functionBody": "return model.devices && model.devices[arrayIndices] && ['MultiOutlet'].includes(model.devices[arrayIndices].type);"
+                }
+              },
+              "dp_switch_3": {
+                "type": "string",
+                "title": "DP Switch 3", 
+                "description": "Data point ID of switch 3 (4)",
+                "placeholder": "4",
+                "required": false,
+                "condition": {
+                  "functionBody": "return model.devices && model.devices[arrayIndices] && ['MultiOutlet'].includes(model.devices[arrayIndices].type);"
+                }
+              },
+              "dp_switch_4": {
+                "type": "string",
+                "title": "DP Switch 4",
+                "description": "Data point ID of switch 4 (5)", 
+                "placeholder": "5",
+                "required": false,
+                "condition": {
+                  "functionBody": "return model.devices && model.devices[arrayIndices] && ['MultiOutlet'].includes(model.devices[arrayIndices].type);"
+                }
+              },
+              "outlet_count": {
+                "type": "integer",
+                "title": "Number of Outlets",
+                "description": "Number of independent switches/outlets (1-4)",
+                "minimum": 1,
+                "maximum": 4,
+                "required": true,
+                "condition": {
+                  "functionBody": "return model.devices && model.devices[arrayIndices] && ['MultiOutlet'].includes(model.devices[arrayIndices].type);"
                 }
               }
             }
