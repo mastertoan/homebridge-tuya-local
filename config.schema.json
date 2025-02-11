@@ -119,6 +119,12 @@
                     "enum": [
                       "AirPurifier"
                     ]
+                  },
+                  {
+                    "title": "Tank A Level",
+                    "enum": [
+                      "TankALevel"
+                    ]
                   }
                 ]
               },
