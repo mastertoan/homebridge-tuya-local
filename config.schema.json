@@ -15,8 +15,9 @@
             "properties": {
               "type": {
                 "type": "string",
+                "title": "Type",
+                "description": "Type of accessory",
                 "required": true,
-                "default": "null",
                 "oneOf": [
                   {
                     "title": "Please select device type...",
@@ -122,9 +123,7 @@
                   },
                   {
                     "title": "Tank A Level",
-                    "enum": [
-                      "TankALevel"
-                    ]
+                    "const": "TankALevel"
                   }
                 ]
               },
@@ -513,6 +512,69 @@
                 "placeholder": 1,
                 "condition": {
                   "functionBody": "return model.devices && model.devices[arrayIndices] && ['SimpleBlinds'].includes(model.devices[arrayIndices].type);"
+                }
+              },
+              "dpLiquidState": {
+                "type": "string",
+                "title": "DP Liquid State",
+                "description": "Data point ID of liquid state (1)",
+                "placeholder": "1",
+                "condition": {
+                  "functionBody": "return model.devices && model.devices[arrayIndices] && ['TankALevel'].includes(model.devices[arrayIndices].type);"
+                }
+              },
+              "dpLiquidDepth": {
+                "type": "string", 
+                "title": "DP Liquid Depth",
+                "description": "Data point ID of current liquid depth (2)",
+                "placeholder": "2",
+                "condition": {
+                  "functionBody": "return model.devices && model.devices[arrayIndices] && ['TankALevel'].includes(model.devices[arrayIndices].type);"
+                }
+              },
+              "dpMaxSet": {
+                "type": "string",
+                "title": "DP Max Level",
+                "description": "Data point ID of maximum level setting (3)",
+                "placeholder": "3",
+                "condition": {
+                  "functionBody": "return model.devices && model.devices[arrayIndices] && ['TankALevel'].includes(model.devices[arrayIndices].type);"
+                }
+              },
+              "dpMiniSet": {
+                "type": "string",
+                "title": "DP Min Level", 
+                "description": "Data point ID of minimum level setting (4)",
+                "placeholder": "4",
+                "condition": {
+                  "functionBody": "return model.devices && model.devices[arrayIndices] && ['TankALevel'].includes(model.devices[arrayIndices].type);"
+                }
+              },
+              "dpInstallHeight": {
+                "type": "string",
+                "title": "DP Installation Height",
+                "description": "Data point ID of installation height (5)",
+                "placeholder": "5", 
+                "condition": {
+                  "functionBody": "return model.devices && model.devices[arrayIndices] && ['TankALevel'].includes(model.devices[arrayIndices].type);"
+                }
+              },
+              "dpLiquidDepthMax": {
+                "type": "string",
+                "title": "DP Max Depth",
+                "description": "Data point ID of maximum liquid depth (6)",
+                "placeholder": "6",
+                "condition": {
+                  "functionBody": "return model.devices && model.devices[arrayIndices] && ['TankALevel'].includes(model.devices[arrayIndices].type);"
+                }
+              },
+              "dpLiquidLevelPercent": {
+                "type": "string",
+                "title": "DP Level Percentage",
+                "description": "Data point ID of liquid level percentage (7)",
+                "placeholder": "7",
+                "condition": {
+                  "functionBody": "return model.devices && model.devices[arrayIndices] && ['TankALevel'].includes(model.devices[arrayIndices].type);"
                 }
               }
             }
