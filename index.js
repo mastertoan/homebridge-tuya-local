@@ -23,6 +23,7 @@ const SwitchAccessory = require('./lib/SwitchAccessory');
 const ValveAccessory = require('./lib/ValveAccessory');
 const OilDiffuserAccessory = require('./lib/OilDiffuserAccessory');
 const TankALevelAccessory = require('./lib/TankALevelAccessory');
+const RFSwitchAccessory = require('./lib/RFSwitchAccessory');
 
 const PLUGIN_NAME = 'homebridge-tuya-local';
 const PLATFORM_NAME = 'TuyaLan';
@@ -49,7 +50,8 @@ const CLASS_DEF = {
     fanlight: SimpleFanLightAccessory,
     watervalve: ValveAccessory,
     oildiffuser: OilDiffuserAccessory,
-    tankalevel: TankALevelAccessory
+    tankalevel: TankALevelAccessory,
+    rfswitch: RFSwitchAccessory
 };
 
 let Characteristic, PlatformAccessory, Service, Categories, AdaptiveLightingController, UUID;

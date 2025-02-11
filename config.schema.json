@@ -124,6 +124,10 @@
                   {
                     "title": "Tank A Level",
                     "enum": ["TankALevel"]
+                  },
+                  {
+                    "title": "RF Switch",
+                    "enum": ["rfswitch"]
                   }
                 ]
               },
@@ -575,6 +579,60 @@
                 "placeholder": "7",
                 "condition": {
                   "functionBody": "return model.devices && model.devices[arrayIndices] && ['TankALevel'].includes(model.devices[arrayIndices].type);"
+                }
+              },
+              "dpMode": {
+                "type": "string",
+                "title": "Mode DP",
+                "description": "Data point ID of mode (light_mode)",
+                "placeholder": "light_mode",
+                "condition": {
+                  "functionBody": "return model.devices && model.devices[arrayIndices] && ['rfswitch'].includes(model.devices[arrayIndices].type);"
+                }
+              },
+              "dpSwitch1": {
+                "type": "string", 
+                "title": "Switch 1 DP",
+                "description": "Data point ID of switch 1",
+                "placeholder": "switch_1",
+                "condition": {
+                  "functionBody": "return model.devices && model.devices[arrayIndices] && ['rfswitch'].includes(model.devices[arrayIndices].type);"
+                }
+              },
+              "dpSwitch2": {
+                "type": "string",
+                "title": "Switch 2 DP", 
+                "description": "Data point ID of switch 2",
+                "placeholder": "switch_2",
+                "condition": {
+                  "functionBody": "return model.devices && model.devices[arrayIndices] && ['rfswitch'].includes(model.devices[arrayIndices].type);"
+                }
+              },
+              "dpSwitch3": {
+                "type": "string",
+                "title": "Switch 3 DP",
+                "description": "Data point ID of switch 3", 
+                "placeholder": "switch_3",
+                "condition": {
+                  "functionBody": "return model.devices && model.devices[arrayIndices] && ['rfswitch'].includes(model.devices[arrayIndices].type);"
+                }
+              },
+              "dpSwitch4": {
+                "type": "string",
+                "title": "Switch 4 DP",
+                "description": "Data point ID of switch 4",
+                "placeholder": "switch_4",
+                "condition": {
+                  "functionBody": "return model.devices && model.devices[arrayIndices] && ['rfswitch'].includes(model.devices[arrayIndices].type);"
+                }
+              },
+              "dpInching": {
+                "type": "string",
+                "title": "Inching DP",
+                "description": "Data point ID of inching config",
+                "placeholder": "switch_inching",
+                "condition": {
+                  "functionBody": "return model.devices && model.devices[arrayIndices] && ['rfswitch'].includes(model.devices[arrayIndices].type);"
                 }
               }
             }
