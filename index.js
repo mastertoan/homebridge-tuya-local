@@ -88,6 +88,10 @@ class TuyaLan {
         const devices = {};
         const connectedDevices = [];
         const fakeDevices = [];
+
+        this.log.info(`Discovery - Starting with ${this.config.devices.length} configured devices`);
+    
+
         this.config.devices.forEach(device => {
             try {
                 device.id = ('' + device.id).trim();
@@ -117,6 +121,12 @@ class TuyaLan {
                 connectedDevices.push(config.id);
 
                 this.log.info('Discovered %s (%s) identified as %s (%s)', devices[config.id].name, config.id, devices[config.id].type, config.version);
+                this.log.info(`Discovery - Device ${config.id} connected successfully
+                    Name: ${devices[config.id].name}
+                    Type: ${devices[config.id].type}
+                    Version: ${config.version}
+                    IP: ${config.ip}
+                `);
 
                 const device = new TuyaAccessory({
                     ...devices[config.id], ...config,
